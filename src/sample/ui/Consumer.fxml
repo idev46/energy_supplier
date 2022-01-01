@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="548.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ConsumerController">
+   <children>
+      <Label layoutX="318.0" layoutY="8.0" lineSpacing="10.0" opacity="0.8" text="Consumer" textAlignment="CENTER" underline="true">
+         <font>
+            <Font name="System Bold" size="42.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="addRb" layoutX="31.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRadioButtons" selected="true" text="Add Consumer">
+         <toggleGroup>
+            <ToggleGroup fx:id="selection" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="updateRb" layoutX="166.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRadioButtons" text="Update Consumer" toggleGroup="$selection" />
+      <RadioButton fx:id="searchRb" layoutX="318.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleRadioButtons" text="Search Consumer" toggleGroup="$selection" />
+      <Label fx:id="hintLabel" layoutX="31.0" layoutY="122.0">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font></Label>
+      <Label fx:id="accountLabel" layoutX="31.0" layoutY="160.0" text="Consumer Account#" />
+      <Label layoutX="34.0" layoutY="199.0" text="Name" />
+      <TextField fx:id="accountTF" layoutX="179.0" layoutY="156.0" prefHeight="25.0" prefWidth="185.0" />
+      <TextField fx:id="nameTF" layoutX="179.0" layoutY="195.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label layoutX="34.0" layoutY="239.0" text="Phone Number" />
+      <Label fx:id="addressLabel" layoutX="32.0" layoutY="298.0" text="Current Address" />
+      <TextField fx:id="phoneTf" layoutX="179.0" layoutY="235.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label fx:id="meterTypeLabel" layoutX="36.0" layoutY="370.0" text="Meter Type" />
+      <ComboBox fx:id="meterTypeCombo" layoutX="178.0" layoutY="366.0" prefHeight="25.0" prefWidth="185.0" />
+      <Label fx:id="tariffTypeLabel" layoutX="36.0" layoutY="421.0" text="Tariff Type" />
+      <ComboBox fx:id="tariffTypeCombo" layoutX="179.0" layoutY="417.0" prefHeight="25.0" prefWidth="185.0" />
+      <Button fx:id="submitBtn" layoutX="179.0" layoutY="470.0" mnemonicParsing="false" onAction="#handleSubmitButton" prefHeight="40.0" prefWidth="185.0" text="Add Consumer" textOverrun="LEADING_WORD_ELLIPSIS">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <TextArea fx:id="outputTextArea" editable="false" layoutX="466.0" layoutY="156.0" prefHeight="347.0" prefWidth="368.0" />
+      <TextArea fx:id="addressTF" layoutX="176.0" layoutY="280.0" prefHeight="70.0" prefWidth="185.0" />
+      <Button layoutX="781.0" layoutY="510.0" onAction="#handleClearButton" text="Clear">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
