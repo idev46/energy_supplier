@@ -31,7 +31,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //showLogin();
-         Parent root = FXMLLoader.load(getClass().getResource("bill.fxml"));
+         Parent root = FXMLLoader.load(getClass().getResource("ui/Readings.fxml"));
         primaryStage.setTitle("Energy Supplier System");
         primaryStage.setScene(new Scene(root ));
         primaryStage.show();
@@ -55,7 +55,7 @@ public class Main extends Application {
 
         Image image = null;
         try {
-            image = new Image(new FileInputStream(currentDir));
+            image = new Image(new FileInputStream("assets/logo.png"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

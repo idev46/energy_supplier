@@ -1,8 +1,0 @@
-Con-1640978348|Usama|1233|o202012|Prepaid Meter|Commercial|2022-01-01T00:19:25.701
-Con-1640978415|Usama2|1233|o202012|Prepaid Meter|Commercial|2022-01-01T00:20:19.658
-Con-1640978635|test user|12345|address|Postpaid Meter|Non-Commercial|2022-01-01T01:42:52.437
-Con-1640979138|k|k|k|Prepaid Meter|Commercial|2022-01-01T00:32:26.169
-Con-1640979146|k|k|k|Prepaid Meter|Commercial|2022-01-01T00:32:38.618
-Con-1640979188|k|k|k|Prepaid Meter|Commercial|2022-01-01T00:33:14.853
-Con-1640979194|k|k|k|Prepaid Meter|Commercial|2022-01-01T00:33:20.171
-Con-1640979230|k|kk|m|Prepaid Meter|Commercial|2022-01-01T00:33:59.128

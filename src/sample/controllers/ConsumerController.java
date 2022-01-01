@@ -244,12 +244,10 @@ public class ConsumerController implements Initializable {
     }
 
     private void setOutputText(String text) {
-        if (outputTextArea.getText().isEmpty()) {
-            outputTextArea.appendText(text);
-        } else {
+        if (!outputTextArea.getText().isEmpty()) {
             text = String.format("\n\n%s", text);
-            outputTextArea.appendText(outputTextArea.getText().concat(text));
         }
+        outputTextArea.appendText(text);
 
         outputTextArea.selectPositionCaret(outputTextArea.getLength());
         outputTextArea.deselect();

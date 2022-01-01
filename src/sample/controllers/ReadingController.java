@@ -1,4 +1,4 @@
-package sample;
+package sample.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -7,18 +7,24 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import sample.models.Consumer;
+import sample.models.Reading;
 import sample.utils.Utils;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static sample.utils.Utils.READINGS_FILE_NAME;
 
-public class Bill implements Initializable {
+public class ReadingController implements Initializable {
     public ComboBox<Consumer> accountsCombo;
     public ComboBox<String> monthsCombo;
     public ComboBox<String> yearsCombo;
@@ -26,23 +32,27 @@ public class Bill implements Initializable {
     public TextField closeReadingsTf;
     public ComboBox<String> paymentBillCombo;
     public TextField costTF;
-    public ComboBox accountsPCombo;
+    public ComboBox<Consumer> accountsPCombo;
     public ComboBox<String> paymentCombo;
     public Button updateBtn;
     public TextArea outputTextarea;
-    int selectedIndex;
+    int consumerIndex;
+    int readingIndex;
     private ArrayList<Consumer> consumers;
+    private ArrayList<Reading> readings;
+    private Reading selectedReading;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             consumers = Utils.getAllConsumers();
+            readings = Utils.getAllReadings();
             if (consumers.isEmpty()) {
                 setOutputText("Error: No consumer found. Add consumer first from consumer menu.");
             } else {
-
                 accountsCombo.getItems().setAll(consumers);
-                //setOutputText("Welcome");
+                accountsPCombo.getItems().setAll(consumers);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,20 +76,50 @@ public class Bill implements Initializable {
     }
 
     private void setOutputText(String text) {
-        if (outputTextarea.getText().isEmpty()) {
-            outputTextarea.appendText(text);
-        } else {
+        if (!outputTextarea.getText().isEmpty()) {
             text = String.format("\n\n%s", text);
-            outputTextarea.appendText(outputTextarea.getText().concat(text));
         }
+        outputTextarea.appendText(text);
 
         outputTextarea.selectPositionCaret(outputTextarea.getLength());
         outputTextarea.deselect();
     }
 
-    public void accountsComboBox(ActionEvent event) {
-        selectedIndex = accountsCombo.getSelectionModel().getSelectedIndex();
+    public void accountsPaymentComboBox(ActionEvent event) {
+        int selectedIndex = accountsPCombo.getSelectionModel().getSelectedIndex();
 
+        boolean isReadingFound = false;
+        for (Reading reading : readings) {
+            if (reading.getConsumer().getAccountNumber().equals(consumers.get(selectedIndex).getAccountNumber())) {
+                paymentCombo.getItems().setAll("Unpaid", "Paid");
+                paymentCombo.setValue(reading.getPaymentStatus());
+                isReadingFound = true;
+                selectedReading = reading;
+            }
+        }
+
+        if (!isReadingFound) {
+            setOutputText("No previous readings found for account# " + consumers.get(selectedIndex).getAccountNumber());
+        }
+    }
+
+    public void accountsComboBox(ActionEvent event) {
+        consumerIndex = accountsCombo.getSelectionModel().getSelectedIndex();
+        Consumer consumer = consumers.get(consumerIndex);
+
+        boolean isReadingFound = false;
+        for (Reading reading : readings) {
+            if (reading.getConsumer().getAccountNumber().equals(consumer.getAccountNumber())) {
+                openReadingsTf.setText(reading.getClosingReadings());
+                isReadingFound = true;
+            }
+        }
+
+        if (!isReadingFound) {
+            setOutputText("No previous readings found for account# " + consumer.getAccountNumber());
+
+            openReadingsTf.setText("0");
+        }
 
     }
 
@@ -107,12 +147,10 @@ public class Bill implements Initializable {
             FileWriter fw = new FileWriter(READINGS_FILE_NAME, true);
             PrintWriter pw = new PrintWriter(fw);
 
-
-            String line = consumers.get(selectedIndex).getAccountNumber() + Utils.SPLITTER2
+            String line = consumers.get(consumerIndex).getAccountNumber() + Utils.SPLITTER2
                     + monthsCombo.getValue().toString() + Utils.SPLITTER2
                     + yearsCombo.getValue().toString() + Utils.SPLITTER2
-                    + "10" + Utils.SPLITTER2
-                    //+ openReadingsTf.getText() + Utils.SPLITTER2
+                    + openReadingsTf.getText() + Utils.SPLITTER2
                     + closeReadingsTf.getText() + Utils.SPLITTER2
                     + costTF.getText() + Utils.SPLITTER2
                     + paymentBillCombo.getValue().toString();
@@ -124,7 +162,7 @@ public class Bill implements Initializable {
             fw.close();
 
             //After Save
-            setOutputText("Success: Reading is added against account #" + consumers.get(selectedIndex).getAccountNumber());
+            setOutputText("Success: Reading is added against account #" + consumers.get(consumerIndex).getAccountNumber());
 
             openReadingsTf.clear();
             closeReadingsTf.clear();
@@ -138,5 +176,33 @@ public class Bill implements Initializable {
 
     public void handleAddReadingsAndGenerateButton(ActionEvent event) {
         saveReadings();
+    }
+
+    public void handleUpdatePaymentButton(ActionEvent event) {
+
+        try {
+
+            Path path = Paths.get(READINGS_FILE_NAME);
+            List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+
+
+            String line = selectedReading.getConsumer().getAccountNumber() + Utils.SPLITTER2
+                    + selectedReading.getMonth().toString() + Utils.SPLITTER2
+                    + selectedReading.getYear().toString() + Utils.SPLITTER2
+                    + selectedReading.getOpeningReadings() + Utils.SPLITTER2
+                    + selectedReading.getClosingReadings() + Utils.SPLITTER2
+                    + selectedReading.getCostPerUnit() + Utils.SPLITTER2
+                    + paymentCombo.getValue();
+
+            lines.set(selectedReading.getRecordNo() - 1, line);
+            Files.write(path, lines, StandardCharsets.UTF_8);
+
+            //After Update
+            setOutputText("Success: Payment status is updated of account #" + selectedReading.getConsumer().getAccountNumber());
+
+        } catch (Exception e) {
+            setOutputText("Error " + e.getMessage());
+
+        }
     }
 }

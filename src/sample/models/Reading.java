@@ -9,6 +9,7 @@ public class Reading {
     //private boolean paymentStatus;
     private String paymentStatus;
     private String costPerUnit;
+    private int recordNo;
     //private String readingDate;
 
     public int getCurrentUsedUnits(){
@@ -69,5 +70,13 @@ public class Reading {
 
     public void setCostPerUnit(String costPerUnit) {
         this.costPerUnit = costPerUnit;
+    }
+
+    public int getRecordNo() {
+        return recordNo;
+    }
+
+    public void setRecordNo(int recordNo) {
+        this.recordNo = recordNo;
     }
 }

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="558.0" prefWidth="965.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Bill">
+<AnchorPane prefHeight="558.0" prefWidth="965.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ReadingController">
     <children>
         <Label layoutX="418.0" layoutY="10.0" text="Readings" textAlignment="CENTER" underline="true" wrapText="true">
             <font>
@@ -43,10 +43,10 @@
         <Button layoutX="270.0" layoutY="447.0" mnemonicParsing="false" onAction="#handleAddReadingsAndGenerateButton" prefHeight="41.0" prefWidth="152.0" text="Add  &amp;  Generate Bill" />
         <Separator layoutX="495.0" layoutY="63.0" orientation="VERTICAL" prefHeight="457.0" prefWidth="13.0" />
         <Label layoutX="534.0" layoutY="123.0" text="Consumer Account#" />
-        <ComboBox fx:id="accountsPCombo" layoutX="719.0" layoutY="119.0" prefHeight="25.0" prefWidth="177.0" />
+        <ComboBox fx:id="accountsPCombo" layoutX="719.0" layoutY="119.0" onAction="#accountsPaymentComboBox" prefHeight="25.0" prefWidth="177.0" />
         <Label layoutX="534.0" layoutY="169.0" text="Payment Status" />
         <ComboBox fx:id="paymentCombo" layoutX="719.0" layoutY="165.0" prefHeight="25.0" prefWidth="177.0" />
-        <Button fx:id="updateBtn" layoutX="719.0" layoutY="215.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="177.0" text="Update" />
+        <Button fx:id="updateBtn" layoutX="719.0" layoutY="215.0" mnemonicParsing="false" onAction="#handleUpdatePaymentButton" prefHeight="41.0" prefWidth="177.0" text="Update" />
         <Label layoutX="527.0" layoutY="81.0" text="Update Payment Status">
             <font>
                 <Font name="System Bold" size="14.0" />

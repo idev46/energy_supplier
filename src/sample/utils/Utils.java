@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-    public static final String CONSUMERS_FILE_NAME = "consumers.txt";
-    public static final String READINGS_FILE_NAME = "readings.txt";
+    public static final String CONSUMERS_FILE_NAME = "record/consumers.txt";
+    public static final String READINGS_FILE_NAME = "record/readings.txt";
     public static final String SPLITTER = "\\|";
     public static final String SPLITTER2 = "|";
 
@@ -76,10 +76,12 @@ public class Utils {
     public static ArrayList<Reading> getAllReadings() throws IOException {
         Path path = Paths.get(READINGS_FILE_NAME);
         List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-
+        int count=0;
         ArrayList<Reading> readings = new ArrayList<>();
         for (String line : lines) {
+            count++;
             Reading reading = getReadingsFromLine(line.split(Utils.SPLITTER));
+            reading.setRecordNo(count);
             readings.add(reading);
         }
 
