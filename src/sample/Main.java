@@ -31,9 +31,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //showLogin();
-         Parent root = FXMLLoader.load(getClass().getResource("ui/Readings.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ui/ConsumerDashboard.fxml"));
         primaryStage.setTitle("Energy Supplier System");
-        primaryStage.setScene(new Scene(root ));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
         /*Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -104,7 +104,7 @@ public class Main extends Application {
         });
 
         loginButton.setOnAction(event -> {
-            if(emailField.getText().toString().isEmpty()){
+            if (emailField.getText().toString().isEmpty()) {
 
                 //Group root = new Group();
                 //Label label2 = new Label(":pp");
@@ -112,34 +112,34 @@ public class Main extends Application {
 
                 //root.getChildren().add(label2);
 
-                ((Node)(event.getSource())).getScene().getWindow().hide();
+                ((Node) (event.getSource())).getScene().getWindow().hide();
 
 
                 Parent root = null;
                 try {
                     root = FXMLLoader.load(getClass().getResource("ui/Consumer.fxml"));
                     primaryStage.setTitle("Energy Supplier System");
-                    primaryStage.setScene(new Scene(root ));
+                    primaryStage.setScene(new Scene(root));
                     primaryStage.show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 //new Alert(Alert.AlertType.ERROR, "Email is  Required.").showAndWait();
-            } else  if(passwordField.getText().isEmpty()){
+            } else if (passwordField.getText().isEmpty()) {
                 new Alert(Alert.AlertType.ERROR, "Password is  Required.").showAndWait();
-            }else if(!validateEmailAddress(emailField.getText().toString())){
+            } else if (!validateEmailAddress(emailField.getText().toString())) {
                 new Alert(Alert.AlertType.ERROR, "Email is invalid.").showAndWait();
-            }else {
-                String pass="admin";
-                String email="admin@admin.com";
+            } else {
+                String pass = "admin";
+                String email = "admin@admin.com";
 
-                if(pass.equals(passwordField.getText()) && email.equals(emailField.getText())){
+                if (pass.equals(passwordField.getText()) && email.equals(emailField.getText())) {
 
 
                     // Hide this current window (if this is what you want)
 
-                } else{
+                } else {
                     new Alert(Alert.AlertType.ERROR, "Email or Password is incorrect").showAndWait();
                 }
             }
@@ -169,7 +169,7 @@ public class Main extends Application {
     public boolean validateEmailAddress(String emailAddress) {
 
         Pattern regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
-        Matcher regMatcher   = regexPattern.matcher(emailAddress);
+        Matcher regMatcher = regexPattern.matcher(emailAddress);
         return regMatcher.matches();
 
     }

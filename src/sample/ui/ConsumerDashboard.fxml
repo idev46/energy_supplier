@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="648.0" prefWidth="1128.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.ConsumerDashboardController">
+   <children>
+      <Label contentDisplay="TOP" graphicTextGap="40.0" layoutX="390.0" text="Consumer Dashboard">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Label>
+      <Label fx:id="accountIdLabel" layoutX="28.0" layoutY="60.0" text="Account id">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameLabel" layoutX="28.0" layoutY="92.0" text="Account holder Name" />
+      <Label fx:id="addressLabel" layoutX="28.0" layoutY="116.0" text="address">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="24.0" layoutY="158.0" text="History">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <TableView fixedCellSize="0.0" layoutX="24.0" layoutY="193.0" prefHeight="424.0" prefWidth="463.0">
+        <columns>
+            <TableColumn prefWidth="107.0" text="Month/Year" />
+          <TableColumn prefWidth="86.0" text="Units(KWh)" />
+          <TableColumn prefWidth="79.0" text="Amount" />
+            <TableColumn prefWidth="105.0" text="Payment Status" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <BarChart layoutX="554.0" layoutY="236.0" prefHeight="382.0" prefWidth="554.0">
+        <xAxis>
+          <CategoryAxis fx:id="barChart" label="Months" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis label="Usage (KWh)" minorTickCount="1000" side="LEFT" tickLabelFill="#111111" upperBound="4000.0" />
+        </yAxis>
+      </BarChart>
+      <Separator layoutX="530.0" layoutY="47.0" orientation="VERTICAL" prefHeight="583.0" prefWidth="24.0" />
+      <Label layoutX="559.0" layoutY="64.0" text="Total Usage">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="totalUsageLabel" layoutX="691.0" layoutY="65.0" text="199.0 kWh">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="tariffTypeLabel" layoutX="559.0" layoutY="101.0" text="TarifType">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </Label>
+      <Button layoutX="984.0" layoutY="65.0" mnemonicParsing="false" text="Generate Current Bill" />
+      <Label layoutX="559.0" layoutY="133.0" text="Opening Readings:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="559.0" layoutY="162.0" text="Closing Readings:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="openReadingsLabel" layoutX="698.0" layoutY="133.0" text="Label" />
+      <Label fx:id="closeReadingsLabel" layoutX="698.0" layoutY="162.0" text="Label" />
+      <Label layoutX="559.0" layoutY="203.0" text="Annual Usage">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="956.0" layoutY="626.0" text="Northampton Energy ©2022" />
+   </children>
+</AnchorPane>
