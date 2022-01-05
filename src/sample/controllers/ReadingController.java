@@ -147,12 +147,12 @@ public class ReadingController implements Initializable {
             FileWriter fw = new FileWriter(READINGS_FILE_NAME, true);
             PrintWriter pw = new PrintWriter(fw);
 
-            String line = consumers.get(consumerIndex).getAccountNumber() + Utils.SPLITTER2
-                    + monthsCombo.getValue().toString() + Utils.SPLITTER2
-                    + yearsCombo.getValue().toString() + Utils.SPLITTER2
-                    + openReadingsTf.getText() + Utils.SPLITTER2
-                    + closeReadingsTf.getText() + Utils.SPLITTER2
-                    + costTF.getText() + Utils.SPLITTER2
+            String line = consumers.get(consumerIndex).getAccountNumber() + Utils.INPUT_SPLITTER
+                    + monthsCombo.getValue().toString() + Utils.INPUT_SPLITTER
+                    + yearsCombo.getValue().toString() + Utils.INPUT_SPLITTER
+                    + openReadingsTf.getText() + Utils.INPUT_SPLITTER
+                    + closeReadingsTf.getText() + Utils.INPUT_SPLITTER
+                    + costTF.getText() + Utils.INPUT_SPLITTER
                     + paymentBillCombo.getValue().toString();
 
             pw.println(line);
@@ -186,12 +186,12 @@ public class ReadingController implements Initializable {
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
 
-            String line = selectedReading.getConsumer().getAccountNumber() + Utils.SPLITTER2
-                    + selectedReading.getMonth().toString() + Utils.SPLITTER2
-                    + selectedReading.getYear().toString() + Utils.SPLITTER2
-                    + selectedReading.getOpeningReadings() + Utils.SPLITTER2
-                    + selectedReading.getClosingReadings() + Utils.SPLITTER2
-                    + selectedReading.getCostPerUnit() + Utils.SPLITTER2
+            String line = selectedReading.getConsumer().getAccountNumber() + Utils.INPUT_SPLITTER
+                    + selectedReading.getMonth().toString() + Utils.INPUT_SPLITTER
+                    + selectedReading.getYear().toString() + Utils.INPUT_SPLITTER
+                    + selectedReading.getOpeningReadings() + Utils.INPUT_SPLITTER
+                    + selectedReading.getClosingReadings() + Utils.INPUT_SPLITTER
+                    + selectedReading.getCostPerUnit() + Utils.INPUT_SPLITTER
                     + paymentCombo.getValue();
 
             lines.set(selectedReading.getRecordNo() - 1, line);

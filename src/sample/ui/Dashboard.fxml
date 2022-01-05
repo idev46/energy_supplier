@@ -11,56 +11,57 @@
 <AnchorPane prefHeight="562.0" prefWidth="785.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controllers.DashboardController">
    <children>
       <Label layoutX="337.0" layoutY="531.0" text="Northampton Energy ©2022" />
-      <ImageView fitHeight="203.0" fitWidth="276.0" layoutX="244.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="203.0" fitWidth="276.0" layoutX="219.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../images/logo.png" />
          </image>
       </ImageView>
-      <Label layoutX="25.0" layoutY="182.0" text="Total Consumers">
+      <Label layoutX="29.0" layoutY="233.0" text="Total Consumers">
          <font>
-            <Font name="System Bold" size="26.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="totalConsumersLabel" layoutX="245.0" layoutY="182.0" text="2000">
+      <Label fx:id="totalConsumersLabel" layoutX="244.0" layoutY="233.0" text="2000">
          <font>
-            <Font size="26.0" />
+            <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="381.0" layoutY="182.0" text="Energy Consumed">
+      <Label layoutX="387.0" layoutY="233.0" text="Energy Consumed">
          <font>
-            <Font name="System Bold" size="26.0" />
+            <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label fx:id="energyLabel" layoutX="632.0" layoutY="182.0" text="20000 kWh">
+      <Label fx:id="energyLabel" layoutX="617.0" layoutY="233.0" text="20000 kWh">
          <font>
-            <Font size="26.0" />
+            <Font size="24.0" />
          </font>
       </Label>
-      <Separator layoutX="23.0" layoutY="239.0" prefHeight="4.0" prefWidth="728.0" />
-      <Label layoutX="257.0" layoutY="251.0" text="Welcome To Northampton Energy">
+      <Separator layoutX="23.0" layoutY="287.0" prefHeight="0.0" prefWidth="728.0" />
+      <Label layoutX="225.0" layoutY="161.0" text="Welcome To Northampton Energy">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button layoutX="133.0" layoutY="311.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="223.0" text="Consumer Menu" onAction="#handleConsumerMenuButton">
+      <Button fx:id="consumerMenuBtn" layoutX="107.0" layoutY="311.0" mnemonicParsing="false" onAction="#handleConsumerMenuButton" prefHeight="71.0" prefWidth="223.0" text="Consumer Menu">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="462.0" layoutY="311.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="223.0" text="Readings Dashboard" onAction="#handleReadingsMenuButton">
+      <Button layoutX="438.0" layoutY="311.0" mnemonicParsing="false" onAction="#handleReadingsMenuButton" prefHeight="71.0" prefWidth="223.0" text="Readings Dashboard">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="133.0" layoutY="426.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="223.0" text="Consumer Dashboard" onAction="#handleConsumerDashBoardButton">
+      <Button layoutX="107.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleConsumerDashBoardButton" prefHeight="71.0" prefWidth="223.0" text="Consumer Dashboard">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="462.0" layoutY="426.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="223.0" text="Logout and Exit" onAction="#handleLogoutButton">
+      <Button layoutX="438.0" layoutY="426.0" mnemonicParsing="false" onAction="#handleLogoutButton" prefHeight="71.0" prefWidth="223.0" text="Logout and Exit">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <Separator layoutX="23.0" layoutY="211.0" prefHeight="0.0" prefWidth="728.0" />
    </children>
 </AnchorPane>

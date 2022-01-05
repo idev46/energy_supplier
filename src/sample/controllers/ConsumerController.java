@@ -135,7 +135,7 @@ public class ConsumerController implements Initializable {
             boolean isFound = false;
 
             while (line != null) {
-                tokens = line.split(Utils.SPLITTER);
+                tokens = line.split(Utils.OUTPUT_SPLITTER);
 
                 Consumer consumer = Utils.getConsumerFromFile(tokens);
                 recordNo++;
@@ -312,18 +312,7 @@ public class ConsumerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         accountTF.setText(generateRandomId());
-        outputTextArea.setWrapText(true);
         handleRadioGroup();
-
-
-        /*outputTextArea.textProperty().addListener(new ChangeListener<Object>() {
-            @Override
-            public void changed(ObservableValue<?> observable, Object oldValue,
-                                Object newValue) {
-                outputTextArea.setScrollTop(Double.MAX_VALUE);
-
-            }
-        });*/
     }
 
     private String generateRandomId() {

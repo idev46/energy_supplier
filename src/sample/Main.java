@@ -31,7 +31,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         //showLogin();
-        Parent root = FXMLLoader.load(getClass().getResource("ui/dashboard.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ui/consumerdashboard.fxml"));
         primaryStage.setTitle("Energy Supplier System");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

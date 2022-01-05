@@ -1,5 +1,7 @@
 package sample.models;
 
+import sample.utils.Utils;
+
 public class Reading {
     private Consumer consumer;
     private String openingReadings;
@@ -12,10 +14,29 @@ public class Reading {
     private int recordNo;
     //private String readingDate;
 
-    public int getCurrentUsedUnits(){
-        int temp = Integer.parseInt(closingReadings)-Integer.parseInt(openingReadings);
-        return temp = Math.max(temp, 0);
+    public double getCurrentUsedUnits() {
+        double temp = Double.parseDouble(closingReadings) - Double.parseDouble(openingReadings);
+        return Math.max(temp, 0);
     }
+
+    public double getTaxes(){
+        double cost = getCostWithoutTaxes();
+        double vat = cost * Utils.VAT;
+        double gst = cost * Utils.GST;
+        double additionalCharges = cost * Utils.ADDITIONAL_CHARGES;
+        return  vat + gst + additionalCharges;
+    }
+
+    public double getTotalCost() {
+        return  getTaxes()+getCostWithoutTaxes();
+    }
+
+    public double getCostWithoutTaxes() {
+        return getCurrentUsedUnits() * Double.parseDouble(costPerUnit);
+    }
+
+
+
     public Consumer getConsumer() {
         return consumer;
     }
