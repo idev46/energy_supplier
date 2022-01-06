@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -43,12 +44,17 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Button>
-      <TextArea fx:id="outputTextArea" editable="false" layoutX="466.0" layoutY="156.0" prefHeight="347.0" prefWidth="368.0" />
+      <TextArea fx:id="outputTextArea" editable="false" layoutX="466.0" layoutY="181.0" prefHeight="322.0" prefWidth="368.0" wrapText="true" />
       <TextArea fx:id="addressTF" layoutX="176.0" layoutY="280.0" prefHeight="70.0" prefWidth="185.0" />
       <Button layoutX="781.0" layoutY="510.0" onAction="#handleClearButton" text="Clear">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
+      <Separator layoutX="453.0" layoutY="69.0" orientation="VERTICAL" prefHeight="200.0" />
+      <ComboBox fx:id="consumersComboBox" layoutX="650.0" layoutY="83.0" prefHeight="25.0" prefWidth="185.0" onAction="#accountsComboBox"/>
+      <Label layoutX="490.0" layoutY="87.0" text="Consumer DashBoard" />
+      <Separator layoutX="476.0" layoutY="136.0" prefHeight="5.0" prefWidth="368.0" />
+      <Label layoutX="476.0" layoutY="160.0" text="Output" />
    </children>
 </AnchorPane>

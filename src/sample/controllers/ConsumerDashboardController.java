@@ -1,7 +1,5 @@
 package sample.controllers;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfWriter;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,12 +17,8 @@ import sample.models.Reading;
 import sample.models.Usage;
 import sample.utils.Utils;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class ConsumerDashboardController implements Initializable {
@@ -37,22 +31,19 @@ public class ConsumerDashboardController implements Initializable {
     public Label closeReadingsLabel;
     public Label openReadingsLabel;
     public Button generateBillBtn;
-    public TableView historyTable;
-    public TableColumn monthsColumn;
-    public TableColumn unitsColumn;
-    public TableColumn paymentColumn;
-    public TableColumn amountColumn;
-    Consumer consumer;
-    Reading latestReading;
+    public TableView<Usage> historyTable;
+    public TableColumn<Usage, String> monthsColumn;
+    public TableColumn<Usage, Double> unitsColumn;
+    public TableColumn<Usage, String> paymentColumn;
+    public TableColumn<Usage, Double> amountColumn;
+    private Consumer consumer;
+    private Reading latestReading;
 
-    private String consumerAccountNo = "Con-1640978348";
-
-
-
+    //Generate and create invoice of consumer reading and open file in pdf viewer
     public void handleGenerateButton(ActionEvent event) {
         String fileName = Utils.generateFileName(consumer.getAccountNumber());
         try {
-           Utils.createInvoice(consumer, latestReading, fileName);
+            Utils.createInvoice(latestReading, fileName);
             Utils.openFile(fileName);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -61,11 +52,10 @@ public class ConsumerDashboardController implements Initializable {
     }
 
 
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            String consumerAccountNo = Utils.accountNo;
             consumer = Utils.getConsumerByAccountNumber(consumerAccountNo);
             accountIdLabel.setText(consumer.getAccountNumber());
             addressLabel.setText(consumer.getCurrentAddress());
@@ -84,8 +74,6 @@ public class ConsumerDashboardController implements Initializable {
 
                 initializeChart(readings);
                 initializeHistoryTable(readings);
-
-
             }
 
         } catch (Exception e) {
@@ -95,6 +83,7 @@ public class ConsumerDashboardController implements Initializable {
         }
     }
 
+    //Getting reading from file then adding it ho table
     private void initializeHistoryTable(ArrayList<Reading> readings) {
         monthsColumn.setCellValueFactory(new PropertyValueFactory<Usage, String>("month"));
         unitsColumn.setCellValueFactory(new PropertyValueFactory<Usage, Double>("units"));
@@ -125,6 +114,7 @@ public class ConsumerDashboardController implements Initializable {
         historyTable.setSelectionModel(null);
     }
 
+    //Initialising the chart after getting reading data from file on monthly basis
     private void initializeChart(ArrayList<Reading> readings) {
         XYChart.Series xySeries = new XYChart.Series();
 

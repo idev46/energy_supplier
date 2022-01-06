@@ -1,20 +1,22 @@
 package sample.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import sample.models.Consumer;
 import sample.utils.Utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,9 +42,11 @@ public class ConsumerController implements Initializable {
     public Label tariffTypeLabel;
     public Label accountLabel;
     public Label hintLabel;
+    public ComboBox<Consumer> consumersComboBox;
+    ArrayList<Consumer> consumers = new ArrayList<>();
     private int recordNo;
 
-
+    //Handle add button and validate the require fields like name, phoneNO
     public void handleSubmitButton(ActionEvent event) {
         if (addRb.isSelected()) {
             if (nameTF.getText().isEmpty()) {
@@ -77,6 +81,7 @@ public class ConsumerController implements Initializable {
         }
     }
 
+    //Update the record of existing consumer
     private void updateRecord() {
         try {
             Path path = Paths.get(CONSUMERS_FILE_NAME);
@@ -116,6 +121,7 @@ public class ConsumerController implements Initializable {
         }
     }
 
+    //Search Consumer from file by usung name, account no or phone no
     private void searchConsumer(boolean isUpdate) {
         try {
             String[] tokens;
@@ -137,7 +143,7 @@ public class ConsumerController implements Initializable {
             while (line != null) {
                 tokens = line.split(Utils.OUTPUT_SPLITTER);
 
-                Consumer consumer = Utils.getConsumerFromFile(tokens);
+                Consumer consumer = Utils.getConsumerFromLine(tokens);
                 recordNo++;
 
                 System.out.println(consumer);
@@ -202,12 +208,11 @@ public class ConsumerController implements Initializable {
         }
     }
 
-
+    //after validaiting this method save the consumer record to file
     private void SaveConsumer() {
         try {
             FileWriter fw = new FileWriter(CONSUMERS_FILE_NAME, true);
             PrintWriter pw = new PrintWriter(fw);
-
 
             String line = accountTF.getText() + "|"
                     + nameTF.getText() + "|"
@@ -236,6 +241,8 @@ public class ConsumerController implements Initializable {
             phoneTf.clear();
             addressTF.clear();
 
+            loadConsumerComboBox();
+
         } catch (Exception e) {
             System.out.println("Error " + e.getMessage());
             setOutputText("Error " + e.getMessage());
@@ -243,6 +250,7 @@ public class ConsumerController implements Initializable {
         }
     }
 
+    //setting the output text in text area
     private void setOutputText(String text) {
         if (!outputTextArea.getText().isEmpty()) {
             text = String.format("\n\n%s", text);
@@ -253,13 +261,14 @@ public class ConsumerController implements Initializable {
         outputTextArea.deselect();
     }
 
+    //setting the default values on combo boxes
     private void setDefaultComoBoxValues() {
         tariffTypeCombo.getItems().setAll("Commercial", "Non-Commercial");
         tariffTypeCombo.setValue("Commercial");
         meterTypeCombo.setValue("Prepaid Meter");
         meterTypeCombo.getItems().setAll("Prepaid Meter", "Postpaid Meter");
     }
-
+    //handling the radio button for add, search, update
     public void handleRadioButtons(ActionEvent event) {
         handleRadioGroup();
     }
@@ -268,6 +277,7 @@ public class ConsumerController implements Initializable {
         outputTextArea.clear();
     }
 
+    //method of handling the   radio button for add, search, update
     private void handleRadioGroup() {
         if (addRb.isSelected()) {
             submitBtn.setText("Add Consumer");
@@ -299,7 +309,7 @@ public class ConsumerController implements Initializable {
         accountTF.setDisable(isDisable);
         //addressLabel.setDisable(isDisable);
     }
-
+    //Disable components on add, update, search
     private void disableComponents(boolean isDisable) {
         meterTypeCombo.setDisable(isDisable);
         meterTypeLabel.setDisable(isDisable);
@@ -309,14 +319,55 @@ public class ConsumerController implements Initializable {
         addressTF.setDisable(isDisable);
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         accountTF.setText(generateRandomId());
         handleRadioGroup();
+        loadConsumerComboBox();
     }
 
+    private void loadConsumerComboBox() {
+        try {
+            consumers.clear();
+            consumers = Utils.getAllConsumers();
+            consumersComboBox.getItems().setAll(consumers);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Generating the unique Id fro new consumer
     private String generateRandomId() {
         return "CONSUMER-" + (new Date().getTime() / 1000L) % Integer.MAX_VALUE;
+    }
+
+
+    //Selecting the acount no from comobox so  you can open the consumer dashboard
+    public void accountsComboBox(ActionEvent event) {
+        int consumerIndex = consumersComboBox.getSelectionModel().getSelectedIndex();
+        Utils.accountNo = consumers.get(consumerIndex).getAccountNumber();
+        switchToConsumerDashboard();
+
+    }
+
+    //Move to Consumer Dashboard screen
+    private void switchToConsumerDashboard() {
+
+        try {
+            String path = "src/sample/ui/";
+            URL url = new File(path.concat("ConsumerDashboard.fxml")).toURI().toURL();
+            Parent parent = FXMLLoader.load(url);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.setResizable(false);
+            stage.setResizable(false);
+            stage.setTitle("Energy Supplier System");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

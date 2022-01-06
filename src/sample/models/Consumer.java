@@ -69,17 +69,5 @@ public class Consumer {
     public String toString() {
         return accountNumber;
     }
-    /*@Override
-    public String toString() {
-        return "Customer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNo='" + phoneNo + '\'' +
-                ", currentAddress='" + currentAddress + '\'' +
-                ", energyTariff='" + energyTariff + '\'' +
-                ", meterType='" + meterType + '\'' +
-                ", registrationDate='" + registrationDate + '\'' +
-                '}';
-    }*/
 
 }

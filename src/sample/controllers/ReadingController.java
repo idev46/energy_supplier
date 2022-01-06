@@ -38,21 +38,20 @@ public class ReadingController implements Initializable {
     public TextArea outputTextarea;
     int consumerIndex;
     int readingIndex;
-    private ArrayList<Consumer> consumers;
-    private ArrayList<Reading> readings;
+    private ArrayList<Consumer> consumers = new ArrayList<>();
+    private ArrayList<Reading> readings = new ArrayList<>();
     private Reading selectedReading;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             consumers = Utils.getAllConsumers();
-            readings = Utils.getAllReadings();
+            updateReadingsList();
             if (consumers.isEmpty()) {
                 setOutputText("Error: No consumer found. Add consumer first from consumer menu.");
             } else {
                 accountsCombo.getItems().setAll(consumers);
                 accountsPCombo.getItems().setAll(consumers);
-
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,6 +60,19 @@ public class ReadingController implements Initializable {
         setDateComboBoxes();
     }
 
+    //Updating the readings list
+    private void updateReadingsList() {
+
+        readings.clear();
+        try {
+            readings = Utils.getAllReadings();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Settings the data to combo boxes
     private void setDateComboBoxes() {
         yearsCombo.getItems().setAll("2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030");
         yearsCombo.setValue("2022");
@@ -123,12 +135,14 @@ public class ReadingController implements Initializable {
 
     }
 
+
+    //Validiatiing the readings fileds
     public void handleAddReadingsButton(ActionEvent event) {
 
         if (!accountsCombo.getValue().toString().isEmpty()) {
             if (!closeReadingsTf.getText().isEmpty()) {
                 if (!costTF.getText().isEmpty()) {
-                    saveReadings();
+                    saveReadings(false);
                 } else {
                     setOutputText("Error: Cost of electricity is required");
                 }
@@ -139,21 +153,29 @@ public class ReadingController implements Initializable {
             setOutputText("Error: Select Account");
         }
 
-
     }
-
-    private void saveReadings() {
+    //Save readings to file
+    private void saveReadings(boolean isGenerateInvoice) {
         try {
             FileWriter fw = new FileWriter(READINGS_FILE_NAME, true);
             PrintWriter pw = new PrintWriter(fw);
 
-            String line = consumers.get(consumerIndex).getAccountNumber() + Utils.INPUT_SPLITTER
-                    + monthsCombo.getValue().toString() + Utils.INPUT_SPLITTER
-                    + yearsCombo.getValue().toString() + Utils.INPUT_SPLITTER
-                    + openReadingsTf.getText() + Utils.INPUT_SPLITTER
-                    + closeReadingsTf.getText() + Utils.INPUT_SPLITTER
-                    + costTF.getText() + Utils.INPUT_SPLITTER
-                    + paymentBillCombo.getValue().toString();
+            Reading reading = new Reading();
+            reading.setConsumer(Utils.getConsumerByAccountNumber(consumers.get(consumerIndex).getAccountNumber()));
+            reading.setMonth(monthsCombo.getValue().toString());
+            reading.setYear(yearsCombo.getValue().toString());
+            reading.setClosingReadings(closeReadingsTf.getText());
+            reading.setOpeningReadings(openReadingsTf.getText());
+            reading.setCostPerUnit(costTF.getText());
+            reading.setPaymentStatus(paymentBillCombo.getValue().toString());
+
+            String line = reading.getConsumer().getAccountNumber() + Utils.INPUT_SPLITTER
+                    + reading.getMonth() + Utils.INPUT_SPLITTER
+                    + reading.getYear() + Utils.INPUT_SPLITTER
+                    + reading.getOpeningReadings() + Utils.INPUT_SPLITTER
+                    + reading.getClosingReadings() + Utils.INPUT_SPLITTER
+                    + reading.getCostPerUnit() + Utils.INPUT_SPLITTER
+                    + reading.getPaymentStatus();
 
             pw.println(line);
 
@@ -167,6 +189,21 @@ public class ReadingController implements Initializable {
             openReadingsTf.clear();
             closeReadingsTf.clear();
 
+            updateReadingsList();
+
+            if (isGenerateInvoice) {
+                String fileName = Utils.generateFileName(reading.getConsumer().getAccountNumber());
+                try {
+                    Utils.createInvoice(reading, fileName);
+                    Utils.openFile(fileName);
+                    setOutputText("Success: Invoice is generated. and saved " + fileName);
+                } catch (Exception e) {
+                    setOutputText("Error: " + e.getMessage());
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
         } catch (Exception e) {
             System.out.println("Error " + e.getMessage());
             setOutputText("Error " + e.getMessage());
@@ -174,17 +211,16 @@ public class ReadingController implements Initializable {
         }
     }
 
+    //Generating and adding reading to file
     public void handleAddReadingsAndGenerateButton(ActionEvent event) {
-        saveReadings();
+        saveReadings(true);
     }
 
+    //Updating the Payment Status
     public void handleUpdatePaymentButton(ActionEvent event) {
-
         try {
-
             Path path = Paths.get(READINGS_FILE_NAME);
             List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-
 
             String line = selectedReading.getConsumer().getAccountNumber() + Utils.INPUT_SPLITTER
                     + selectedReading.getMonth().toString() + Utils.INPUT_SPLITTER
@@ -199,10 +235,10 @@ public class ReadingController implements Initializable {
 
             //After Update
             setOutputText("Success: Payment status is updated of account #" + selectedReading.getConsumer().getAccountNumber());
+            updateReadingsList();
 
         } catch (Exception e) {
             setOutputText("Error " + e.getMessage());
-
         }
     }
 }

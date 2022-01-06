@@ -14,33 +14,37 @@ public class Reading {
     private int recordNo;
     //private String readingDate;
 
+    //Get current used units from open and close readings
     public double getCurrentUsedUnits() {
         double temp = Double.parseDouble(closingReadings) - Double.parseDouble(openingReadings);
         return Math.max(temp, 0);
     }
 
-    public double getTaxes(){
+    //get taxes for consumed energy cost
+    public double getTaxes() {
         double cost = getCostWithoutTaxes();
         double vat = cost * Utils.VAT;
         double gst = cost * Utils.GST;
         double additionalCharges = cost * Utils.ADDITIONAL_CHARGES;
-        return  vat + gst + additionalCharges;
+        return vat + gst + additionalCharges;
     }
 
+    //get total cost with taxes
     public double getTotalCost() {
-        return  getTaxes()+getCostWithoutTaxes();
+        return getTaxes() + getCostWithoutTaxes();
     }
 
+    //get total cost without taxes
     public double getCostWithoutTaxes() {
         return getCurrentUsedUnits() * Double.parseDouble(costPerUnit);
     }
-
 
 
     public Consumer getConsumer() {
         return consumer;
     }
 
+    //Getters and Setters
     public void setConsumer(Consumer consumer) {
         this.consumer = consumer;
     }

@@ -16,11 +16,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.net.URL;
 
 public class Main extends Application {
 
@@ -30,19 +29,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //showLogin();
-        Parent root = FXMLLoader.load(getClass().getResource("ui/consumerdashboard.fxml"));
+        /*
+        Parent root = FXMLLoader.load(getClass().getResource("ui/consumer.fxml"));
         primaryStage.setTitle("Energy Supplier System");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
-        /*Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();*/
+*/
+        showLogin();
     }
 
+    //Show login Screeen
     private void showLogin() {
+        String pass = "admin";
+        String userName = "admin";
+
         Stage primaryStage = new Stage();
         final int SPACING = 10;
         final int PADDING = 10;
@@ -50,12 +50,15 @@ public class Main extends Application {
 
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(PADDING, PADDING, PADDING, PADDING));
-        String currentDir = System.getProperty("user.dir") + "\\src\\sample\\images\\logo.png";
-        System.out.println("Working Directory = " + currentDir);
+
+        /*
+         String currentDir = System.getProperty("user.dir") + "\\src\\sample\\images\\logo.png";
+                System.out.println("Working Directory = " + currentDir);
+        */
 
         Image image = null;
         try {
-            image = new Image(new FileInputStream("assets/logo.png"));
+            image = new Image(new FileInputStream("src/images/logo.png"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -63,16 +66,16 @@ public class Main extends Application {
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(260);
 
-        //Email
+        //Username
         HBox hBox = new HBox(SPACING);
         hBox.setAlignment(Pos.CENTER);
         hBox.setPadding(new Insets(0, 0, 10, 0));
 
-        Label label = new Label("Email:      ");
-        TextField emailField = new TextField();
+        Label label = new Label("Username:   ");
+        TextField userNameField = new TextField();
 
         hBox.getChildren().add(label);
-        hBox.getChildren().add(emailField);
+        hBox.getChildren().add(userNameField);
 
         //Password
         HBox hBox1 = new HBox(SPACING);
@@ -100,50 +103,22 @@ public class Main extends Application {
 
         quitButton.setOnAction(event -> {
             Platform.exit();
-            System.exit(0);
         });
 
         loginButton.setOnAction(event -> {
-            if (emailField.getText().toString().isEmpty()) {
-
-                //Group root = new Group();
-                //Label label2 = new Label(":pp");
-                //vBox.getChildren().add(hBox3);
-
-                //root.getChildren().add(label2);
-
-                ((Node) (event.getSource())).getScene().getWindow().hide();
-
-
-                Parent root = null;
-                try {
-                    root = FXMLLoader.load(getClass().getResource("ui/Consumer.fxml"));
-                    primaryStage.setTitle("Energy Supplier System");
-                    primaryStage.setScene(new Scene(root));
-                    primaryStage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                //new Alert(Alert.AlertType.ERROR, "Email is  Required.").showAndWait();
+            if (userNameField.getText().toString().isEmpty()) {
+                new Alert(Alert.AlertType.ERROR, "UserName is  Required.").showAndWait();
             } else if (passwordField.getText().isEmpty()) {
                 new Alert(Alert.AlertType.ERROR, "Password is  Required.").showAndWait();
-            } else if (!validateEmailAddress(emailField.getText().toString())) {
-                new Alert(Alert.AlertType.ERROR, "Email is invalid.").showAndWait();
             } else {
-                String pass = "admin";
-                String email = "admin@admin.com";
-
-                if (pass.equals(passwordField.getText()) && email.equals(emailField.getText())) {
-
-
-                    // Hide this current window (if this is what you want)
-
+                if (pass.equals(passwordField.getText()) && userName.equals(userNameField.getText())) {
+                    // Hide this current window ()
+                    ((Node) (event.getSource())).getScene().getWindow().hide();
+                    switchToDashboard();
                 } else {
-                    new Alert(Alert.AlertType.ERROR, "Email or Password is incorrect").showAndWait();
+                    new Alert(Alert.AlertType.ERROR, "UserName or Password is incorrect").showAndWait();
                 }
             }
-
         });
 
         hBox3.getChildren().add(quitButton);
@@ -165,12 +140,21 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    //After successful login switch this screen to dashboard screen
+    private void switchToDashboard() {
+        try {
+            String path = "src/sample/ui/";
+            URL url = new File(path.concat("Dashboard.fxml")).toURI().toURL();
+            Parent parent = FXMLLoader.load(url);
 
-    public boolean validateEmailAddress(String emailAddress) {
-
-        Pattern regexPattern = Pattern.compile("^[(a-zA-Z-0-9-\\_\\+\\.)]+@[(a-z-A-z)]+\\.[(a-zA-z)]{2,3}$");
-        Matcher regMatcher = regexPattern.matcher(emailAddress);
-        return regMatcher.matches();
-
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.setResizable(false);
+            stage.setResizable(false);
+            stage.setTitle("Energy Supplier System");
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
